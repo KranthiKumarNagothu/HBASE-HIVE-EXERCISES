@@ -1,0 +1,60 @@
+[training@localhost ~]$ hbase shell
+23/02/28 06:44:39 WARN conf.Configuration: hadoop.native.lib is deprecated. Instead, use io.native.lib.available
+HBase Shell; enter 'help<RETURN>' for list of supported commands.
+Type "exit<RETURN>" to leave the HBase Shell
+Version 0.92.1-cdh4.1.1, rUnknown, Tue Oct 16 11:44:19 PDT 2012
+
+hbase(main):001:0> list
+TABLE                                                                           
+blogs                                                                           
+mytable                                                                         
+user                                                                            
+3 row(s) in 0.7320 seconds
+
+hbase(main):002:0> create 'urtable', 'cf'
+0 row(s) in 1.1570 seconds
+
+hbase(main):003:0> major_compact 'mytable'
+0 row(s) in 0.0910 seconds
+
+hbase(main):004:0> list
+TABLE                                                                           
+blogs                                                                           
+mytable                                                                         
+urtable                                                                         
+user                                                                            
+4 row(s) in 0.0580 seconds
+
+hbase(main):005:0> put 'urtable', 'row1', 'cf:col', 
+hbase(main):006:0* 
+hbase(main):007:0* [training@localhost ~]$ 
+[training@localhost ~]$ habse shell
+bash: habse: command not found
+[training@localhost ~]$ hbase shell
+23/02/28 06:59:02 WARN conf.Configuration: hadoop.native.lib is deprecated. Instead, use io.native.lib.available
+HBase Shell; enter 'help<RETURN>' for list of supported commands.
+Type "exit<RETURN>" to leave the HBase Shell
+Version 0.92.1-cdh4.1.1, rUnknown, Tue Oct 16 11:44:19 PDT 2012
+
+hbase(main):001:0> put 'urtable', 'row1', 'cf:col', 'foo1'
+0 row(s) in 0.7220 seconds
+
+hbase(main):002:0> put 'urtable', 'row2', 'cf:col', 'bar1'
+0 row(s) in 0.0090 seconds
+
+hbase(main):003:0> put 'urtable', 'row3', 'cf:col', 'doll1'
+0 row(s) in 0.0080 seconds
+
+hbase(main):004:0> flush 'urtable'
+0 row(s) in 0.2410 seconds
+
+hbase(main):005:0> get 'mytable', 'row1'
+COLUMN                CELL                                                      
+ cf:col               timestamp=1677583632043, value=foo                        
+1 row(s) in 0.0270 seconds
+
+
+
+
+hadoop fs -ls
+

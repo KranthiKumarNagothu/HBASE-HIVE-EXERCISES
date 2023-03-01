@@ -1,0 +1,232 @@
+
+					HBASE LOCALHOST
+
+
+[training@localhost ~]$ hive
+Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties
+Hive history file=/tmp/training/hive_job_log_training_202303010653_149343295.txt
+hive> add jar
+/usr/lib/hive/lib/hive-hbase-handler-0.9.0-cdh4.1.1.jar;
+Added /usr/lib/hive/lib/hive-hbase-handler-0.9.0-cdh4.1.1.jar to class path
+Added resource: /usr/lib/hive/lib/hive-hbase-handler-0.9.0-cdh4.1.1.jar
+hive> add jar /usr/lib/hbase/hbase.jar;
+Added /usr/lib/hbase/hbase.jar to class path
+Added resource: /usr/lib/hbase/hbase.jar
+hive> CREATE EXTERNAL TABLE hbaseUserRatings (userid int,
+movieid int, rating int) STORED BY
+'org.apache.hadoop.hive.hbase.HBaseStorageHandler' WITH
+SERDEPROPERTIES ("hbase.columns.mapping" =
+":key,cf1:movieid,cf1:rating") TBLPROPERTIES
+("hbase.table.name" = "hbaseUserRatings");
+OK
+Time taken: 4.67 seconds
+hive> select * from hbaseUserRatings;
+OK
+10000	42	5
+11000	21	4
+Time taken: 0.372 seconds
+hive> INSERT OVERWRITE TABLE hbaseUserRatings SELECT
+userid, (movieid+1), rating FROM hbaseUserRatings;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_202303010640_0001, Tracking URL = http://0.0.0.0:50030/jobdetails.jsp?jobid=job_202303010640_0001
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_202303010640_0001
+Hadoop job information for Stage-0: number of mappers: 1; number of reducers: 0
+2023-03-01 06:56:27,115 Stage-0 map = 0%,  reduce = 0%
+2023-03-01 06:56:31,195 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 2.77 sec
+2023-03-01 06:56:32,217 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 2.77 sec
+2023-03-01 06:56:33,234 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 2.77 sec
+2023-03-01 06:56:34,257 Stage-0 map = 100%,  reduce = 100%, Cumulative CPU 2.77 sec
+MapReduce Total cumulative CPU time: 2 seconds 770 msec
+Ended Job = job_202303010640_0001
+2 Rows loaded to hbaseuserratings
+MapReduce Jobs Launched: 
+Job 0: Map: 1   Cumulative CPU: 2.77 sec   HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 770 msec
+OK
+Time taken: 13.975 seconds
+hive> scan 'hbaseUserRatings', {VERSIONS=>3}
+    > ;
+FAILED: ParseException line 1:0 cannot recognize input near 'scan' ''hbaseUserRatings'' ','
+
+hive> scan 'hbaseUserRatings', {VERSIONS=>3}
+    > 
+    > scan 'hbaseUserRatings', {VERSIONS=>3};
+FAILED: ParseException line 1:0 cannot recognize input near 'scan' ''hbaseUserRatings'' ','
+
+hive> scan 'hbaseUserRatings', {VERSIONS=>3};
+FAILED: ParseException line 1:0 cannot recognize input near 'scan' ''hbaseUserRatings'' ','
+
+hive> INSERT OVERWRITE TABLE hbaseUserRatings SELECT
+userid, movieid, rating FROM UserRatings;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_202303010640_0002, Tracking URL = http://0.0.0.0:50030/jobdetails.jsp?jobid=job_202303010640_0002
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_202303010640_0002
+Hadoop job information for Stage-0: number of mappers: 1; number of reducers: 0
+2023-03-01 06:58:30,310 Stage-0 map = 0%,  reduce = 0%
+2023-03-01 06:59:30,838 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:31,850 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:32,863 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:33,875 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:34,892 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:35,909 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:36,923 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:37,935 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:38,946 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:39,957 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:40,969 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:41,979 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:42,991 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:44,002 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:45,012 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:46,023 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:47,036 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:48,048 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:49,060 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:50,070 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:51,080 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:52,093 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:53,104 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:54,114 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:55,126 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:56,139 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:57,149 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:58,163 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 7.19 sec
+2023-03-01 06:59:59,175 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 7.19 sec
+2023-03-01 07:00:00,188 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 7.19 sec
+2023-03-01 07:00:01,203 Stage-0 map = 100%,  reduce = 100%, Cumulative CPU 7.19 sec
+MapReduce Total cumulative CPU time: 7 seconds 190 msec
+Ended Job = job_202303010640_0002
+100000 Rows loaded to hbaseuserratings
+MapReduce Jobs Launched: 
+Job 0: Map: 1   Cumulative CPU: 7.19 sec   HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 190 msec
+OK
+Time taken: 95.794 seconds
+
+
+
+
+
+
+
+
+
+
+
+
+			HIVE EXERCISES WITH HBASE
+
+
+
+
+
+
+[training@localhost ~]$ hive
+Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties
+Hive history file=/tmp/training/hive_job_log_training_202303010653_149343295.txt
+hive> add jar
+/usr/lib/hive/lib/hive-hbase-handler-0.9.0-cdh4.1.1.jar;
+Added /usr/lib/hive/lib/hive-hbase-handler-0.9.0-cdh4.1.1.jar to class path
+Added resource: /usr/lib/hive/lib/hive-hbase-handler-0.9.0-cdh4.1.1.jar
+hive> add jar /usr/lib/hbase/hbase.jar;
+Added /usr/lib/hbase/hbase.jar to class path
+Added resource: /usr/lib/hbase/hbase.jar
+hive> CREATE EXTERNAL TABLE hbaseUserRatings (userid int,
+movieid int, rating int) STORED BY
+'org.apache.hadoop.hive.hbase.HBaseStorageHandler' WITH
+SERDEPROPERTIES ("hbase.columns.mapping" =
+":key,cf1:movieid,cf1:rating") TBLPROPERTIES
+("hbase.table.name" = "hbaseUserRatings");
+OK
+Time taken: 4.67 seconds
+hive> select * from hbaseUserRatings;
+OK
+10000	42	5
+11000	21	4
+Time taken: 0.372 seconds
+hive> INSERT OVERWRITE TABLE hbaseUserRatings SELECT
+userid, (movieid+1), rating FROM hbaseUserRatings;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_202303010640_0001, Tracking URL = http://0.0.0.0:50030/jobdetails.jsp?jobid=job_202303010640_0001
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_202303010640_0001
+Hadoop job information for Stage-0: number of mappers: 1; number of reducers: 0
+2023-03-01 06:56:27,115 Stage-0 map = 0%,  reduce = 0%
+2023-03-01 06:56:31,195 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 2.77 sec
+2023-03-01 06:56:32,217 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 2.77 sec
+2023-03-01 06:56:33,234 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 2.77 sec
+2023-03-01 06:56:34,257 Stage-0 map = 100%,  reduce = 100%, Cumulative CPU 2.77 sec
+MapReduce Total cumulative CPU time: 2 seconds 770 msec
+Ended Job = job_202303010640_0001
+2 Rows loaded to hbaseuserratings
+MapReduce Jobs Launched: 
+Job 0: Map: 1   Cumulative CPU: 2.77 sec   HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 770 msec
+OK
+Time taken: 13.975 seconds
+hive> scan 'hbaseUserRatings', {VERSIONS=>3}
+    > ;
+FAILED: ParseException line 1:0 cannot recognize input near 'scan' ''hbaseUserRatings'' ','
+
+hive> scan 'hbaseUserRatings', {VERSIONS=>3}
+    > 
+    > scan 'hbaseUserRatings', {VERSIONS=>3};
+FAILED: ParseException line 1:0 cannot recognize input near 'scan' ''hbaseUserRatings'' ','
+
+hive> scan 'hbaseUserRatings', {VERSIONS=>3};
+FAILED: ParseException line 1:0 cannot recognize input near 'scan' ''hbaseUserRatings'' ','
+
+hive> INSERT OVERWRITE TABLE hbaseUserRatings SELECT
+userid, movieid, rating FROM UserRatings;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_202303010640_0002, Tracking URL = http://0.0.0.0:50030/jobdetails.jsp?jobid=job_202303010640_0002
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_202303010640_0002
+Hadoop job information for Stage-0: number of mappers: 1; number of reducers: 0
+2023-03-01 06:58:30,310 Stage-0 map = 0%,  reduce = 0%
+2023-03-01 06:59:30,838 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:31,850 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:32,863 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:33,875 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:34,892 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:35,909 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:36,923 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:37,935 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:38,946 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:39,957 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:40,969 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:41,979 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:42,991 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:44,002 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:45,012 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:46,023 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:47,036 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:48,048 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:49,060 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:50,070 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:51,080 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:52,093 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:53,104 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:54,114 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:55,126 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:56,139 Stage-0 map = 0%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:57,149 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 5.82 sec
+2023-03-01 06:59:58,163 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 7.19 sec
+2023-03-01 06:59:59,175 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 7.19 sec
+2023-03-01 07:00:00,188 Stage-0 map = 100%,  reduce = 0%, Cumulative CPU 7.19 sec
+2023-03-01 07:00:01,203 Stage-0 map = 100%,  reduce = 100%, Cumulative CPU 7.19 sec
+MapReduce Total cumulative CPU time: 7 seconds 190 msec
+Ended Job = job_202303010640_0002
+100000 Rows loaded to hbaseuserratings
+MapReduce Jobs Launched: 
+Job 0: Map: 1   Cumulative CPU: 7.19 sec   HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 190 msec
+OK
+Time taken: 95.794 seconds
+
